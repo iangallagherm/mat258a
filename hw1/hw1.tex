@@ -1,0 +1,83 @@
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{multicol}
+
+% Page layout
+\geometry{margin=0.75in}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Ian Gallagher}
+\lhead{Math 207C Homework}
+\rfoot{\thepage}
+\setlength{\headheight}{14pt}
+
+% Commands
+\newcommand{\vep}{\varepsilon}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+
+% Environments
+\newtheoremstyle{problemstyle}
+  {1em} % Space above
+  {1em} % Space below
+  {\normalfont} % Body font
+  {} % Indent amount
+  {\bfseries} % Theorem head font
+  {} % Punctuation after theorem head
+  {\newline} % Space after theorem head
+  {} % Theorem head spec
+
+\theoremstyle{problemstyle}
+\newtheorem{problem}{Problem}
+
+% Custom commands
+\newenvironment{solution}
+  {\noindent\textbf{Solution}\quad}
+  {\hfill$\blacksquare$\par\vspace{1em}}
+
+% Enumerate styles
+\setlist[enumerate,1]{label=(\alph*), ref=\alph*, itemsep=-0.2em, topsep=0.4em}
+\setlist[enumerate,2]{label=(\roman*), ref=\roman*, itemsep=0em, topsep=0.2em}
+
+% Title info
+\title{Math 258A Challenge \#\texttt{1}}
+\author{Ian Gallagher}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 9: Geometry Challenge via Non-linear Optimization Models}
+Your challenge is packing $m$ spheres in a box of minimal area. The spheres
+have a given radius $r_i$, and the problem is to determine the precise location
+of the centers $x_i$. The constraints in this problem are that the spheres
+should not overlap, and should be contained in a square of center $0$ and
+half-size $R$. The objective is to minimize the area of the containing box.
+
+\begin{enumerate}
+    \item Show that two spheres of radius $r_1$, $r_2$ and centers $x_1$, $x_2$
+        respectively do not intersect if and only if $\|x_1 - x_2\|_2$ exceeds
+        a certain number, which you will determine.
+    \item Formulate the sphere packing problem as an optimization model. Is the
+        formulation you have found convex optimization?
+    \item Write (in SCIP, Python, MATLAB, or any other environment) code to
+        solve the packing problem of five and six circular disks of the same
+        radius inside a square of half-size $R$. What is the optimal size if
+        the disks have radius 1?
+    \item Do some drawings using MATLAB of the packings you have discovered. Is
+        the solution unique?
+\end{enumerate}
+
+\begin{solution}
+
+\end{solution}
+
+\end{document}
+
