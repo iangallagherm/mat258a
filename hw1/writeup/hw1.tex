@@ -21,6 +21,7 @@
 % Commands
 \newcommand{\vep}{\varepsilon}
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\newcommand{\norm}[2]{\lVert #1 \rVert_{#2}}
 
 % Environments
 \newtheoremstyle{problemstyle}
@@ -55,12 +56,10 @@
 \maketitle
 
 \section*{Problem 9: Geometry Challenge via Non-linear Optimization Models}
-Your challenge is packing $m$ spheres in a box of minimal area. The spheres
-have a given radius $r_i$, and the problem is to determine the precise location
-of the centers $x_i$. The constraints in this problem are that the spheres
-should not overlap, and should be contained in a square of center $0$ and
-half-size $R$. The objective is to minimize the area of the containing box.
-
+Your challenge is packing $m$ spheres in a box of minimal area. The spheres have a given radius $r_i$, and the problem
+is to determine the precise location of the centers $x_i$. The constraints in this problem are that the spheres should
+not overlap, and should be contained in a square of center $0$ and half-size $R$. The objective is to minimize the area
+of the containing box.
 \begin{enumerate}
     \item Show that two spheres of radius $r_1$, $r_2$ and centers $x_1$, $x_2$
         respectively do not intersect if and only if $\|x_1 - x_2\|_2$ exceeds
@@ -76,15 +75,35 @@ half-size $R$. The objective is to minimize the area of the containing box.
 \end{enumerate}
 
 \begin{solution}
-
   \begin{enumerate}
-    \item The sphere with center $x_i$ and radius $r_i$ is denoted by
-      \[ 
-        S(x_i, r_i)^n = \left\{ x \quad \vert \quad \left\lVert x - x_i
-        \right\rVert_2 = r_i \right\}
+    \item\label{part:int} The distance between two spheres is $\norm{x_1 - x_2}{2}$. If we consider the line segment
+      connecting the centers of the two spheres, we can see that the spheres do not intersect if and only if the
+      distance between their centers is greater than the sum of their radii. Thus, we have:
+      \[
+        \norm{x_1 - x_2}{2} > r_1 + r_2
       \]
+      as the constraint to prevent intersections. If we allow spheres to be tangent at a point then we may relax this
+      strict inequality to get
+      \[
+        \norm{x_1 - x_2}{2} \geq r_1 + r_2
+      \]
+    \item Our objective is to minimize $R$ subject to the constraints that the spheres don't intersect (discussed in
+      part \ref{part:int}) and the constraint that the spheres are entirely contained within the box. The latter condition
+      can be restated as $\abs{x_{i, j} \pm r_i} \leq R$ for all $i \in \{1,\dots,m\}, j \in \{1,\dots n\}$ where $n$ is
+      the dimension of the space. Putting these together, we have the following minimization problem
+      \begin{equation}
+        \begin{aligned}
+          \min_{R, x_1, \dots x_m} \quad & R \\
+          \textrm{s.t.} \quad &  \norm{x_i - x_j}{2} \geq r_i + r_j && \text{ for } i,j \in \{1,\dots,m\}, i \neq r_j \\
+                              & \abs{x_{i,j} \pm r_i} \leq R && \text{ for } i \in \{1,\dots,m\}, j \in \{1,\dots,n\}.
+        \end{aligned}
+      \end{equation}
+      This is a non-convex optimization problem. One way to see this is in the case of two circles. If we have two
+      placements $x_1, x_2$ of the circles, then linear interpolation of $x_1$ to $x_2$ and vice versa can lead to the
+      intersection of the two circles.
+    \item Placeholder
+    \item Placeholder
   \end{enumerate}
-
 \end{solution}
 
 \end{document}
