@@ -8,6 +8,7 @@
 \usepackage{fancyhdr}
 \usepackage{mathtools}
 \usepackage{multicol}
+\usepackage[colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue]{hyperref}
 
 % Page layout
 \geometry{margin=0.75in}
@@ -75,6 +76,9 @@ of the containing box.
 \end{enumerate}
 
 \begin{solution}
+  \newline
+  Initial setup of the optimization problem was discussed with both Santiago and Jared. Santiago also assisted with
+  debugging a variable bound issue that was forcing all circles to have centers in the first quadrant.
   \begin{enumerate}
     \item\label{part:int} The distance between two spheres is $\norm{x_1 - x_2}{2}$. If we consider the line segment
       connecting the centers of the two spheres, we can see that the spheres do not intersect if and only if the
@@ -93,7 +97,7 @@ of the containing box.
       the dimension of the space. Putting these together, we have the following minimization problem
       \begin{equation}
         \begin{aligned}
-          \min_{R, x_1, \dots x_m} \quad & R \\
+          \min \quad & R \\
           \textrm{s.t.} \quad &  \norm{x_i - x_j}{2} \geq r_i + r_j && \text{ for } i,j \in \{1,\dots,m\}, i \neq r_j \\
                               & \abs{x_{i,j} \pm r_i} \leq R && \text{ for } i \in \{1,\dots,m\}, j \in \{1,\dots,n\}.
         \end{aligned}
@@ -101,8 +105,35 @@ of the containing box.
       This is a non-convex optimization problem. One way to see this is in the case of two circles. If we have two
       placements $x_1, x_2$ of the circles, then linear interpolation of $x_1$ to $x_2$ and vice versa can lead to the
       intersection of the two circles.
-    \item Placeholder
-    \item Placeholder
+    \newpage
+    \item I implemented a solver for the given optimization problem using Gurobi. The code can be viewed at the
+      following link and is also uploaded along with the writeup:
+      \url{https://gist.github.com/iangallagherm/9377faa6099e3c640b34df9183293e41}
+      % insert hyperlink below with dummy address
+           
+
+      Based on the solutions I found, the minimum half-size $R$ of the box containing the disks is:
+      \begin{itemize}
+        \item 5 disks: $R \approx 2.4142$
+        \item 6 disks: $R \approx 2.6641$
+      \end{itemize}
+    \item Visualizations of the solution for 5 disks and 6 disks are shown in
+      Figures \ref{fig:5disks} and \ref{fig:6disks} respectively. The solution for 6 disks is not unique as it does not
+      have a 90 degree rotation symmetry. The solution for 5 disks appears to be unique but I have not verified this.
+      % Add figures in 5_circles.png and 6_circles.png
+      \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{5_circles.png}
+        \caption{Packing of 5 disks}
+        \label{fig:5disks}
+      \end{figure}
+
+      \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{6_circles.png}
+        \caption{Packing of 6 disks}
+        \label{fig:6disks}
+      \end{figure}
   \end{enumerate}
 \end{solution}
 
