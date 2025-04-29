@@ -1,0 +1,154 @@
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{multicol}
+\usepackage{minted}
+\usepackage[colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue]{hyperref}
+
+% Page layout
+\geometry{margin=0.75in}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Ian Gallagher}
+\lhead{Math 207C Homework}
+\rfoot{\thepage}
+\setlength{\headheight}{14pt}
+
+% Commands
+\newcommand{\vep}{\varepsilon}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\newcommand{\norm}[2]{\lVert #1 \rVert_{#2}}
+
+% Environments
+\newtheoremstyle{problemstyle}
+  {1em} % Space above
+  {1em} % Space below
+  {\normalfont} % Body font
+  {} % Indent amount
+  {\bfseries} % Theorem head font
+  {} % Punctuation after theorem head
+  {\newline} % Space after theorem head
+  {} % Theorem head spec
+
+\theoremstyle{problemstyle}
+\newtheorem{problem}{Problem}
+
+% Custom commands
+\newenvironment{solution}
+  {\noindent\textbf{Solution}\quad}
+  {\hfill$\blacksquare$\par\vspace{1em}}
+
+% Enumerate styles
+\setlist[enumerate,1]{label=(\alph*), ref=\alph*, itemsep=-0.2em, topsep=0.4em}
+\setlist[enumerate,2]{label=(\roman*), ref=\roman*, itemsep=0em, topsep=0.2em}
+
+% column vector in parentheses
+\newcommand{\pvec}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+% Title info
+\title{Math 258A Challenge \#\texttt{3}}
+\author{Ian Gallagher}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\noindent (Worked jointly with Santiago Morales before writing up individual
+solutions).
+
+\section*{Problem 1}
+Consider the nonlinear optimization problem
+
+\[
+\text{max} \quad \frac{x_1}{x_2 + 1}
+\]
+\[
+\text{\bf subject to:} \quad x_1 - x_2 \leq 2, \quad x_1 \geq 0, \quad x_2 \geq 0.
+\]
+
+% --------------------------------------------------------------------------
+\subsection*{Use the KKT conditions to show that (4,2) is not optimal}
+
+The objective function and constraints for the given optimization problem are
+\begin{align*}
+  f(x) = \frac{x_1}{x_2+1}, \\
+  g_1(x)=x_1-x_2-2\le0, \\
+  g_2(x)=-x_1\le0, \\
+  g_3(x)=-x_2\le0 .
+\end{align*}
+The Lagrangian is therefore
+\[
+  L(x,\lambda)=f(x)-\sum_{i=1}^3\lambda_i g_i(x)
+\]
+with $\lambda_i\ge0$.
+
+Checking for slack variables, we find that $g_1(4,2)=0$ while $g_2(4,2)=-4$,
+$g_3(r,2)=-2$. Complementarity conditions therefore require that $\lambda_2 =
+\lambda_3 = 0$. Checking the gradient condition, we have
+
+\begin{align*}
+\nabla f(4,2)-\lambda_1\nabla g_1(4,2)=0 \\
+(1/3,\,-4/9)-\lambda_1(1,-1)=0.
+\end{align*}
+Since $(1/3, -4/9)$ is not a scalar multiple of $(1,-1)$, there is no possible
+$\lambda_1$ that satisfies the equation. We may conclude that the point $(4,2)$
+is not optimal.
+
+% --------------------------------------------------------------------------
+\subsection*{A solution that does satisfy the KKT conditions}
+
+To maximize the rational function $f$ requires making the numerator as large as
+possible while simultaneously minimizing the denominator. This pushes any
+potential optimal solution onto the right boundary of the feasible region. The
+point $(2,0)$ is a good guess since it will allow two degrees of freedom when
+evaluating the Lagrangian gradient condition.
+
+That is, \((2,0)\) satisfies \(g_1(x)=g_3(x)=0\) and \(g_2(x)=-2<0\). So
+$\lambda_2=0$ and we have
+\[
+  \nabla f(2,0)-\lambda_1\nabla g_1(x) -\lambda_3\nabla g_3(x)
+  =(1,-2)-\lambda_1(1,-1)-\lambda_2(0,-1) = 0
+\]
+Choosing $\lambda_1=1$ and $\lambda_3=1$ gives the desired equality, and this
+suffices to show that $(2,0)$ satisfies the KKT conditions.
+
+% --------------------------------------------------------------------------
+\subsection*{Show this problem is not convex}
+
+Since we are maximizing our objective function, convexity will require that $f$
+be concave and that the feasible region is convex. The feasible region here is
+an intersection of linear inequalities, which is convex. The problem must be
+with the objective function.
+Take the points \(A=(0,2)\) and \(B=(2,0)\) inside the feasible region. Their
+midpoint is \(C=(1,1)\). Evaluating the objective function at these points gives
+\begin{align*}
+  f(A)&=\frac{0}{3}=0,\\
+  f(B)&=\frac{2}{1}=2,\\
+  f(C)&=\frac{1}{2}=0.5.
+\end{align*}
+Concavity would demand
+\(f(C)\ge\frac12f(A)+\frac12f(B)=1\), but we have shown this is not the case.
+Therefore, the given problem is not convex.
+
+% --------------------------------------------------------------------------
+\subsection*{Optimality}
+
+As we have previously argued, any optimal solution must lie on the right
+boundary of the feasible region, where $x_1-x_2=2$. Substituting this into the
+objective gives
+\[
+f(x)=\frac{x_2+2}{x_2+1}=1+\frac{1}{x_2+1}.
+\]
+This is a decreasing function of $x_2$ for $x_2\ge0$, so the maximum must occur
+at $x_2^*=0$. The optimal solution is therefore $(x_1^*,x_2^*)=(2,0)$ and we are
+done.
+
+\end{document}
+
