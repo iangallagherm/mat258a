@@ -1,0 +1,130 @@
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{multicol}
+\usepackage{minted}
+\usepackage{optidef}   % https://ctan.org/pkg/optidef
+\usepackage[colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue]{hyperref}
+
+% Page layout
+\geometry{margin=0.75in}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Ian Gallagher}
+\lhead{Math 207C Homework}
+\rfoot{\thepage}
+\setlength{\headheight}{14pt}
+
+% Commands
+\newcommand{\vep}{\varepsilon}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\newcommand{\norm}[2]{\lVert #1 \rVert_{#2}}
+\newcommand{\pvec}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+% Environments
+\newtheoremstyle{problemstyle}
+  {1em} % Space above
+  {1em} % Space below
+  {\normalfont} % Body font
+  {} % Indent amount
+  {\bfseries} % Theorem head font
+  {} % Punctuation after theorem head
+  {\newline} % Space after theorem head
+  {} % Theorem head spec
+
+\theoremstyle{problemstyle}
+\newtheorem{problem}{Problem}
+
+% Custom commands
+\newenvironment{solution}
+  {\noindent\textbf{Solution}\quad}
+  {\hfill$\blacksquare$\par\vspace{1em}}
+
+% Enumerate styles
+\setlist[enumerate,1]{label=(\alph*), ref=\alph*, itemsep=-0.2em, topsep=0.4em}
+\setlist[enumerate,2]{label=(\roman*), ref=\roman*, itemsep=0em, topsep=0.2em}
+
+% Title info
+\title{Math 258A Challenge \#\texttt{5}}
+\author{Ian Gallagher}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 5}
+Prove that given a finite collection of vertical segments in the plane, if for
+every three segments there is a line intersecting them, there exists a line
+intersecting them all.
+
+\begin{proof}
+  Let $S_1, S_2, \ldots, S_n$ be the finite collection of vertical segments in
+  the the plane. For each $S_i$, consider the space of lines passing through
+  that segment, parameterized by slope and y-intercept. In particular, define
+  $L_i = \left\{(m, b) \in \mathbb{R}^2 : y = mx + b \text{ s.t } (x_i, mx_i +
+  b) \in S_i\right\}$. The set $L_i$ is a closed, bounded, convex set. For
+  closure, it must contain its limit points since the original line segment is
+  closed. The line segment being finite length also guarantees that the set of
+  legal slopes and y-intercepts must be bounded.
+
+  To prove convexity, take two lines $y = m_1x + b_1$ and $y = m_2x + b_2$ in
+  $L_i$. The line $y = (m_1x + b_1) + \theta \left(m_2x + b_2\right)$ ,$\theta
+  \in [0, 1]$, is the line corresponding to the convex combination of the two
+  points in the parameter space. We have $y(x_i) = y_1 + \theta(y_2 - y_1)$,
+  where $y_1$ and $y_2$ are the y-coordinates of the two lines at $x_i$. Since
+  $S_i$ is a convex line segment, this y-coordinate is in the segment.
+
+  By the assumption that every three line segments, $S_i, S_j, S_k$ have a line
+  intersecting them, we have that the intersection $L_{ijk} = L_i \cap L_j \cap
+  L_k$ is non-empty. That is, the intersection of any three of the closed
+  bounded convex sets is non-empty. By Helly's theorem, with $d = 2$, we have
+  the intersection $L = \bigcap_{i=1}^n L_i$ is non-empty. Picking a point $(m, b)
+  \in L$ gives the desired line $y = mx + b$ that intersects all the segments at
+  once.
+\end{proof}
+
+\section*{Problem 13 (estimation of probability distribution)}
+A random variable $\xi$ has possible values $\xi_1, \ldots, \xi_n$, but the
+corresponding probabilities $p_1, \ldots, p_n$ are unknown. Formulate the
+problem of finding $p_1, \ldots, p_n$ such that the variance of $\xi$ is
+maximized, the expected value of $\xi$ is between $\alpha$ and $\beta$, the
+probabilities sum to one and no probability is less than $0.01/n$. Reformulate
+the resulting model as a minimization problem and check convexity.
+
+\section*{Solution}
+The maximization problem can be formulated as follows:
+\begin{maxi}
+  {p_1, \ldots p_n}
+  {\operatorname{Var}(\xi) = \operatorname{E}[\xi^2] - \operatorname{E}[\xi]^2}
+  {}{}
+  \addConstraint{p_1 + \cdots + p_n}{= 1}
+  \addConstraint{p_i}{\ge .01/n,\quad i=1,\dots,n}
+  \addConstraint{\operatorname{E}[\xi]}{\ge \alpha}
+  \addConstraint{\operatorname{E}[\xi]}{\le \beta}
+\end{maxi}
+
+\noindent The minimization problem is the same but with the objective function negated:
+\begin{mini}
+  {p_1, \ldots p_n}
+  {\operatorname{E}[\xi]^2 - \operatorname{E}[\xi^2]}
+  {}{}
+  \addConstraint{p_1 + \cdots + p_n}{= 1}
+  \addConstraint{\operatorname{E}[\xi]}{\ge \alpha}
+  \addConstraint{\operatorname{E}[\xi]}{\le \beta}
+  \addConstraint{p_i}{\ge .01/n,\quad i=1,\dots,n}
+\end{mini}
+
+\noindent The feasible region is the intersection of a set of affine equalities
+and inequalities and is therefore convex. The objective function is a positive
+quadratic function in the variables $p_i$ and is therefore convex. Therefore,
+this minization problem is convex.
+
+\end{document}
+
